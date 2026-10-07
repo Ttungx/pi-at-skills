@@ -6,7 +6,7 @@
  * unified list, opencode v2 style:
  *
  *   `@`            → files (native order) followed by every mentionable skill
- *   `@pd`          → files matching `pd` followed by skills matching `pd`
+ *   `@pd`          → skills matching `pd` first, then files matching `pd`
  *   `@src/comp`    → pure native path completion (skills never apply)
  *
  * Every non-`@` context (slash commands, `!bash`, plain text) is delegated to
@@ -79,7 +79,11 @@ export function createMentionAutocompleteProvider(
       if (options.signal.aborted) return null;
 
       const nativeItems = (native?.items ?? []).filter((item) => !(item as SkillItem)[SKILL_ITEM]);
-      const items: AutocompleteItem[] = [...nativeItems, ...skillItems];
+      // Once the user typed something, matching skills lead the list. Otherwise
+      // Enter would accept a same-named file, which the native provider inserts
+      // with a trailing space — no mention, no skill.
+      const items =
+        query !== "" && skillItems.length > 0 ? [...skillItems, ...nativeItems] : [...nativeItems, ...skillItems];
       if (items.length === 0) return null;
 
       return { items, prefix: native?.prefix ?? `@${query}` };

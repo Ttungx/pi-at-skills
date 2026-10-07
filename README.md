@@ -56,11 +56,13 @@ pi -e /path/to/pi-at-skills
 
 | 输入 | 行为 |
 | --- | --- |
-| `@` | 弹出列表：文件在前，随后是全部 skill。skill 条目右侧与 pi 原生 `/skill:` 列表一致，显示作用域标签和 skill 描述，例如 `[u] Create new skills, ...`。 |
-| `@pd` | 文件与 skill 同时按 `pd` 过滤。skill 使用模糊匹配，`@impv` 可命中 `improve-codebase`，前缀命中排在前面。 |
+| `@` | 弹出列表：文件在前，随后是全部 skill（与 pi 原生行为一致）。 |
+| `@pd` | 输入字符后，命中的 skill 排在文件之前，避免回车选中同名前缀的文件。skill 按模糊匹配过滤，`@impv` 可命中 `improve-codebase`，前缀命中排在前面。 |
 | `@src/comp` | 查询串含 `/` 或 `\` 时，只走 pi 原生路径补全。 |
 | `@skill-name` | 提交前注入该 skill 的 `SKILL.md` 正文（去掉 frontmatter），一条消息可注入多个。 |
 | `@@skill-name` | 转义，保持字面量 `@skill-name`。 |
+
+skill 条目右侧与 pi 原生 `/skill:` 列表一致，显示作用域标签和 skill 描述，例如 `[u] Create new skills, ...`。选中 skill 条目后不补尾随空格；pi 的文件补全会自动补一个空格。
 | `$skill-name` | 兼容 pi-skills-mention 的旧写法，仍然可用；补全只在 `@` 上触发。 |
 
 注入的 skill 以 pi 原生 `<skill name=... location=...>` 块送达模型，界面上渲染为一行折叠摘要，按 `ctrl+o` 展开全文。同一会话分支上已注入过的 skill 不重复注入。
@@ -72,7 +74,7 @@ pi -e /path/to/pi-at-skills
 - 只有 pi 已加载的 skill 名才构成 mention。`@PATH`、`@not-installed` 等未知 token 原样保留在文本中。
 - 符号必须位于 token 边界：邮箱 `user@example.com`、`a@b`、路径 `E:/x/@pdf`、装饰器 `@Component` 均不触发。
 - 紧跟 `.` 或 `/` 的 token 不构成 mention：`@notes.md`、`@src/foo.ts` 交给文件补全。
-- skill 按模糊算法匹配。若某个 skill 名是某个文件名的前缀，两条会同时出现在 `@` 列表中，由使用者选择。
+- skill 按模糊算法匹配。若某个 skill 名是某个文件名的前缀，输入字符后 skill 行排在文件行之前；裸 `@` 时文件行在前，需要用方向键选中 skill 行。
 
 ## 实现说明
 

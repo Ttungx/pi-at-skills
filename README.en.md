@@ -56,11 +56,13 @@ After the package is published to npm, the install command becomes `pi install n
 
 | Input | Behaviour |
 | --- | --- |
-| `@` | Opens the list: files first, then every skill. Skill rows read like pi's native `/skill:` rows, with a scope tag and the skill description, for example `[u] Create new skills, ...`. |
-| `@pd` | Files and skills filter on `pd` together. Skills match fuzzily, so `@impv` matches `improve-codebase`; prefix matches rank first. |
+| `@` | Opens the list: files first, then every skill, matching pi's native behaviour. |
+| `@pd` | Once characters are typed, matching skills lead the list so that Enter cannot pick a same-prefix file. Skills filter fuzzily: `@impv` matches `improve-codebase`, prefix matches rank first. |
 | `@src/comp` | A query containing `/` or `\` uses native path completion only. |
 | `@skill-name` | Injects that skill's `SKILL.md` body (frontmatter stripped) before the agent runs. One message may inject several. |
 | `@@skill-name` | Escape hatch: stays a literal `@skill-name`. |
+
+Skill rows read like pi's native `/skill:` rows, with a scope tag and the skill description, for example `[u] Create new skills, ...`. Accepting a skill row adds no trailing space; pi's own file completion appends one.
 | `$skill-name` | The legacy spelling from pi-skills-mention still works. Autocomplete only triggers on `@`. |
 
 Injected skills reach the model as pi's native `<skill name=... location=...>` blocks. The transcript renders them as one collapsed summary line; `ctrl+o` expands the full text. Skills already injected on the same session branch are not injected again.
@@ -72,7 +74,7 @@ This extension calls an `@skill-name` written inside a prompt a *mention*, and i
 - Only skills that pi has loaded count as mentions. Unknown tokens such as `@PATH` and `@not-installed` stay literal text.
 - The sigil must sit on a token boundary. Emails (`user@example.com`, `a@b`), paths (`E:/x/@pdf`) and decorators (`@Component`) never trigger.
 - A token glued to `.` or `/` is not a mention: `@notes.md` and `@src/foo.ts` go to file completion.
-- Skill matching is fuzzy. When a skill name is a prefix of a filename, both rows appear in the `@` list and the user picks one.
+- Skill matching is fuzzy. When a skill name is a prefix of a filename, skill rows lead once characters are typed; for a bare `@` the file rows lead, and reaching the skill row needs the arrow keys.
 
 ## Implementation notes
 
