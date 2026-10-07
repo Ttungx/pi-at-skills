@@ -2,6 +2,8 @@
 
 [![npm](https://img.shields.io/npm/v/pi-at-skills)](https://www.npmjs.com/package/pi-at-skills)
 
+中文文档见 [README.md](README.md)。
+
 Invoke pi skills with `@` anywhere in the prompt while keeping `@` for file attachments. Written for pi users who prefer the opencode v2 input model. See [Install](#install) for setup and [When a mention triggers](#when-a-mention-triggers) for the limits.
 
 pi natively expands `/skill:name` only at the start of the first line: the editor gates it in `isSlashMenuAllowed()` with `cursorLine === 0`. This extension leaves pi's slash commands untouched and merges skills into the `@` completion list instead:
@@ -23,8 +25,6 @@ review with @code-review, then polish the summary with @humanizer-zh
 ```
 
 ![@ completion list: skill rows carry a scope tag and the skill description](media/preview.png)
-
-中文文档见 [README.md](README.md)。
 
 ## Requirements
 
