@@ -49,7 +49,7 @@ pi -e E:/software/AAATools/MyRepos/small/pi-at-skills
 
 | 输入 | 行为 |
 | --- | --- |
-| `@` | 弹出列表：文件在前，随后是全部 skill。skill 条目的描述为 `skill · <所在目录>`。 |
+| `@` | 弹出列表：文件在前，随后是全部 skill。skill 条目的右侧与 pi 原生 `/skill:` 列表一致，显示作用域标签和 skill 描述，如 `[u] Create new skills, ...`。 |
 | `@pd` | 文件与 skill 同时按 `pd` 过滤。skill 使用模糊匹配，`@impv` 可命中 `improve-codebase`，前缀命中排在前面。 |
 | `@src/comp` | 查询串含 `/` 或 `\` 时，只走 pi 原生路径补全。 |
 | `@skill-name` | 提交前注入该 skill 的 `SKILL.md` 正文（去掉 frontmatter），一条消息可注入多个。 |
@@ -73,7 +73,7 @@ pi -e E:/software/AAATools/MyRepos/small/pi-at-skills
 | `src/mention.ts` | `@` 与 `$` token 扫描，含路径、邮箱和边界规则。 |
 | `src/autocomplete.ts` | 通过 `ctx.ui.addAutocompleteProvider` 把 skill 并入 pi 原生 `@` 文件补全。 |
 | `src/discover.ts` | skill 发现。优先复用 pi 已加载的 skill 集合，首轮对话回落到 pi 自己的 `loadSkills`。 |
-| `src/skill-registry.ts` | 读取 `SKILL.md`，构造 `<skill>` 块。 |
+| `src/skill-registry.ts` | 读取 `SKILL.md`，构造 `<skill>` 块；同时把 frontmatter 中的描述和作用域标签带入 `@` 列表。 |
 
 设计上的一处约束：pi 的 `setAutocompleteTriggerCharacters` 会过滤 `/` 和空白字符，扩展无法把 `/` 注册为触发字符。`@` 本来就在默认触发字符中，因此本扩展改为包装原生 provider，并在 `applyCompletion` 中按条目类型分流：skill 条目替换自己对应的 token，其余条目交还原生 provider，由它补回 `@`。
 

@@ -154,6 +154,6 @@ function toItem(skill: MentionSkill, typed: string): SkillItem {
 }
 
 function describeSkill(skill: MentionSkill): string {
-  const path = skill.filePath.replace(/(^|\/)(SKILL\.md|\w+\.md)$/i, "");
-  return `skill${path ? ` · ${path}` : ""}`;
+  // Same shape as pi's native /skill: rows: `[u] Create new skills, ...`.
+  return [skill.tag, skill.description].filter(Boolean).join(" ");
 }

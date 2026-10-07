@@ -4,13 +4,17 @@
 
 import { readFileSync } from "node:fs";
 import { dirname } from "node:path";
-import type { ParsedSkillBlock, Skill } from "@earendil-works/pi-coding-agent";
+import type { ParsedSkillBlock, Skill, SourceInfo } from "@earendil-works/pi-coding-agent";
 
 /** A skill that is mention-addressable by name. */
 export interface MentionSkill {
   name: string;
   filePath: string;
   baseDir: string;
+  /** `description` from the SKILL.md frontmatter, shown in the @ list. */
+  description: string;
+  /** Scope tag shown before the description, e.g. `[u]`. Empty for built-ins. */
+  tag: string;
 }
 
 /**
@@ -86,7 +90,30 @@ export function indexSkills(skills: readonly Skill[] | undefined): Map<string, M
   for (const s of skills ?? []) {
     if (!s.name) continue;
     const baseDir = s.baseDir || dirname(s.filePath);
-    map.set(s.name, { name: s.name, filePath: s.filePath, baseDir });
+    map.set(s.name, {
+      name: s.name,
+      filePath: s.filePath,
+      baseDir,
+      description: s.description ?? "",
+      tag: skillTag(s.sourceInfo),
+    });
   }
   return map;
+}
+
+/**
+ * Scope/source tag, mirroring pi's own command palette so the @ list reads
+ * like the native `/skill:` list: `[u]` user, `[p]` project, `[t]` temporary,
+ * plus the npm package name when the skill came from one.
+ *
+ * pi also appends parsed git host/path/ref here; `parseGitUrl` is not exported
+ * from the host package, so git sources fall back to the bare scope tag.
+ */
+function skillTag(sourceInfo: SourceInfo | undefined): string {
+  if (!sourceInfo || sourceInfo.source === "builtin") return "";
+  const scope = sourceInfo.scope === "user" ? "u" : sourceInfo.scope === "project" ? "p" : "t";
+  const source = sourceInfo.source.trim();
+  if (source === "auto" || source === "local" || source === "cli") return `[${scope}]`;
+  if (source.startsWith("npm:")) return `[${scope}:${source}]`;
+  return `[${scope}]`;
 }

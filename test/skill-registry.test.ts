@@ -7,7 +7,7 @@ import { after, describe, it } from "node:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { buildInlineSkillsContent } from "../src/skill-registry.ts";
+import { buildInlineSkillsContent, indexSkills } from "../src/skill-registry.ts";
 import type { MentionSkill } from "../src/skill-registry.ts";
 
 const dirs: string[] = [];
@@ -17,7 +17,7 @@ function skill(name: string, body: string): MentionSkill {
 	dirs.push(baseDir);
 	const filePath = join(baseDir, "SKILL.md");
 	writeFileSync(filePath, `---\nname: ${name}\ndescription: test\n---\n${body}`, "utf8");
-	return { name, filePath, baseDir };
+	return { name, filePath, baseDir, description: `use ${name}`, tag: "[u]" };
 }
 
 after(() => {
@@ -50,5 +50,51 @@ describe("buildInlineSkillsContent", () => {
 		const { content } = buildInlineSkillsContent([skill("fm", "正文内容")]);
 		assert.ok(!content.includes("description: test"));
 		assert.ok(content.includes("正文内容"));
+	});
+});
+
+describe("indexSkills", () => {
+	function piSkill(overrides: Record<string, unknown>) {
+		return {
+			name: "code-review",
+			description: "Review a diff before merging.",
+			filePath: "/skills/code-review/SKILL.md",
+			baseDir: "/skills/code-review",
+			disableModelInvocation: false,
+			...overrides,
+		};
+	}
+
+	function sourceInfo(overrides: Record<string, unknown>) {
+		return { path: "", source: "auto", scope: "user", origin: "top-level", ...overrides };
+	}
+
+	it("keeps the frontmatter description for the @ completion list", () => {
+		const map = indexSkills([piSkill({})]);
+		assert.equal(map.get("code-review")?.description, "Review a diff before merging.");
+	});
+
+	it("tags the scope like pi's own command palette", () => {
+		assert.equal(indexSkills([piSkill({ sourceInfo: sourceInfo({}) })]).get("code-review")?.tag, "[u]");
+		assert.equal(
+			indexSkills([piSkill({ sourceInfo: sourceInfo({ scope: "project" }) })]).get("code-review")?.tag,
+			"[p]",
+		);
+		assert.equal(
+			indexSkills([piSkill({ sourceInfo: sourceInfo({ scope: "temporary" }) })]).get("code-review")?.tag,
+			"[t]",
+		);
+	});
+
+	it("includes the npm package name in the tag", () => {
+		const map = indexSkills([
+			piSkill({ sourceInfo: sourceInfo({ source: "npm:pi-subagents", origin: "package" }) }),
+		]);
+		assert.equal(map.get("code-review")?.tag, "[u:npm:pi-subagents]");
+	});
+
+	it("skips skills without a name", () => {
+		assert.equal(indexSkills([piSkill({ name: "" })]).size, 0);
+		assert.equal(indexSkills(undefined).size, 0);
 	});
 });

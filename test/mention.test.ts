@@ -11,7 +11,13 @@ import { scanMentions } from "../src/mention.ts";
 import type { MentionSkill } from "../src/skill-registry.ts";
 
 function skill(name: string): MentionSkill {
-  return { name, filePath: `/tmp/${name}/SKILL.md`, baseDir: `/tmp/${name}` };
+  return {
+    name,
+    filePath: `/tmp/${name}/SKILL.md`,
+    baseDir: `/tmp/${name}`,
+    description: `use ${name} rules`,
+    tag: "[u]",
+  };
 }
 
 function index(...names: string[]): Map<string, MentionSkill> {

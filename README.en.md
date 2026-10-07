@@ -49,7 +49,7 @@ After the package is published to npm, the install command becomes `pi install n
 
 | Input | Behaviour |
 | --- | --- |
-| `@` | Opens the list: files first, then every skill. Skill rows are described as `skill · <directory>`. |
+| `@` | Opens the list: files first, then every skill. Skill rows read like pi's native `/skill:` rows, with a scope tag and the skill description, for example `[u] Create new skills, ...`. |
 | `@pd` | Files and skills filter on `pd` together. Skills match fuzzily, so `@impv` matches `improve-codebase`; prefix matches rank first. |
 | `@src/comp` | A query containing `/` or `\` uses native path completion only. |
 | `@skill-name` | Injects that skill's `SKILL.md` body (frontmatter stripped) before the agent runs. One message may inject several. |
@@ -73,7 +73,7 @@ Injected skills reach the model as pi's native `<skill name=... location=...>` b
 | `src/mention.ts` | `@` and `$` token scanning with path, email and boundary rules. |
 | `src/autocomplete.ts` | Merges skills into pi's native `@` file completion through `ctx.ui.addAutocompleteProvider`. |
 | `src/discover.ts` | Skill discovery. Reuses the skill set pi already loaded and falls back to pi's own `loadSkills` on the first turn. |
-| `src/skill-registry.ts` | Reads `SKILL.md` and builds `<skill>` blocks. |
+| `src/skill-registry.ts` | Reads `SKILL.md` and builds `<skill>` blocks; also carries the frontmatter description and scope tag into the `@` list. |
 
 One constraint shapes the design: pi's `setAutocompleteTriggerCharacters` filters out `/` and whitespace, so an extension cannot register `/` as a trigger character. `@` is already a default trigger, so the extension wraps the native provider instead and routes `applyCompletion` per item type — skill rows replace their own token, everything else goes back to the native provider, which re-adds the `@`.
 
