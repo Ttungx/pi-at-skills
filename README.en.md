@@ -1,5 +1,7 @@
 # pi-at-skills
 
+[![npm](https://img.shields.io/npm/v/pi-at-skills)](https://www.npmjs.com/package/pi-at-skills)
+
 Invoke pi skills with `@` anywhere in the prompt while keeping `@` for file attachments. Written for pi users who prefer the opencode v2 input model. See [Install](#install) for setup and [When a mention triggers](#when-a-mention-triggers) for the limits.
 
 pi natively expands `/skill:name` only at the start of the first line: the editor gates it in `isSlashMenuAllowed()` with `cursorLine === 0`. This extension leaves pi's slash commands untouched and merges skills into the `@` completion list instead:
@@ -36,7 +38,13 @@ The extension ships as TypeScript source. Pi compiles it on load through its jit
 
 ## Install
 
-From the Git repository:
+From npm:
+
+```bash
+pi install npm:pi-at-skills
+```
+
+From the Git repository (tracks the main branch):
 
 ```bash
 pi install git:github.com/Ttungx/pi-at-skills
@@ -49,8 +57,6 @@ Try it for a single run without writing settings:
 ```bash
 pi -e /path/to/pi-at-skills
 ```
-
-After the package is published to npm, the install command becomes `pi install npm:pi-at-skills`.
 
 ## Usage
 

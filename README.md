@@ -1,5 +1,7 @@
 # pi-at-skills
 
+[![npm](https://img.shields.io/npm/v/pi-at-skills)](https://www.npmjs.com/package/pi-at-skills)
+
 用 `@` 在输入框任意位置调用 pi 的 skill，同时保留 `@` 的文件附件能力。适合已经习惯 opencode v2 输入方式的 pi 用户；改动方式见「安装」，限制见「触发条件与例外」。
 
 pi 原生只有 `/skill:name` 能调用 skill，且必须写在消息的第一行：编辑器在 `isSlashMenuAllowed()` 中限定 `cursorLine === 0`。本扩展不修改 pi 的斜杠命令，改为在 `@` 补全列表中并入 skill：
@@ -36,7 +38,13 @@ $tdd 实现这个功能
 
 ## 安装
 
-从 Git 仓库安装：
+从 npm 安装：
+
+```bash
+pi install npm:pi-at-skills
+```
+
+从 Git 仓库安装（跟踪 main 分支）：
 
 ```bash
 pi install git:github.com/Ttungx/pi-at-skills
@@ -49,8 +57,6 @@ pi install git:github.com/Ttungx/pi-at-skills
 ```bash
 pi -e /path/to/pi-at-skills
 ```
-
-包发布到 npm 后，安装命令改为 `pi install npm:pi-at-skills`。
 
 ## 用法
 

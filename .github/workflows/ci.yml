@@ -5,12 +5,15 @@ on:
     branches: [main]
     tags: ["v*"]
   pull_request:
-  # Re-run publishing after the npm credentials are configured, without
-  # re-pushing the tag.
+  # Re-run publishing without pushing a new tag.
   workflow_dispatch:
 
 permissions:
   contents: read
+
+# Publishing uses npm Trusted Publishing (OIDC): no npm token is stored in
+# this repository. The trusted publisher is configured on
+# https://www.npmjs.com/package/pi-at-skills/access
 
 jobs:
   test:
@@ -54,5 +57,3 @@ jobs:
             exit 1
           fi
       - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
