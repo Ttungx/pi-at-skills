@@ -17,6 +17,8 @@ review with @code-review first, then commit          this extension: anywhere, s
 
 中文 README: [README.md](README.md)
 
+![@ completion list: skill rows carry a scope tag and the skill description](media/preview.png)
+
 ## Requirements
 
 | Item | Value |

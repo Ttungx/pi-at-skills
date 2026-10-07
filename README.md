@@ -17,6 +17,8 @@ $tdd 实现这个功能                                  pi 原生写法：只�
 
 English README: [README.en.md](README.en.md)
 
+![@ 补全列表：skill 条目带作用域标签与描述](media/preview.png)
+
 ## 环境要求
 
 | 项目 | 要求 |
