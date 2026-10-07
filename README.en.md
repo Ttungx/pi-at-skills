@@ -1,27 +1,28 @@
-<div align="center">
-
-[中文](./README.md) · **English**
-
-</div>
-
 # pi-at-skills
 
-Invoke pi skills with `@` anywhere in the prompt, while keeping `@` for file attachments. Written for pi users who prefer the opencode v2 input model.
+Invoke pi skills with `@` anywhere in the prompt while keeping `@` for file attachments. Written for pi users who prefer the opencode v2 input model. See [Install](#install) for setup and [When a mention triggers](#when-a-mention-triggers) for the limits.
 
-Pi natively expands `/skill:name` only at the start of the first line: the editor gates it in `isSlashMenuAllowed()` with `cursorLine === 0`. This extension leaves pi's slash commands untouched and merges skills into the `@` completion list instead:
+pi natively expands `/skill:name` only at the start of the first line: the editor gates it in `isSlashMenuAllowed()` with `cursorLine === 0`. This extension leaves pi's slash commands untouched and merges skills into the `@` completion list instead:
 
-- One `@` list holds both files (pi's native order) and every available skill. Typing narrows both at once.
+- One `@` list holds files (pi's native order) and every available skill. Typing narrows both at once.
 - `@skill-name` works anywhere in a sentence, and one message can invoke several skills.
 - `@src/foo.ts` and `@notes.md` fall through to pi's native path completion and are never read as skills.
 - The prompt is never rewritten. Skill bodies are injected as a separate `✦ @skills` context message, so `/fuck`-style recovery, rewind and re-editing all show the original text.
 
-```
-$tdd implement this feature                           pi native: start of message, one at a time
-review with @code-review first, then commit          this extension: anywhere, several at once
-@pdf process E:\programs\CUBEC per AGENTS.md         files and skills share one key
+```text
+# pi native: start of message only, one skill per message
+$tdd implement this feature
+
+# this extension: anywhere in the prompt, several at once
+review with @code-review, then polish the summary with @humanizer-zh
+
+# files and skills share one key
+@pdf process E:\programs\CUBEC\AGENTS.md per its rules
 ```
 
 ![@ completion list: skill rows carry a scope tag and the skill description](media/preview.png)
+
+中文文档见 [README.md](README.md)。
 
 ## Requirements
 
@@ -60,18 +61,20 @@ After the package is published to npm, the install command becomes `pi install n
 | `@src/comp` | A query containing `/` or `\` uses native path completion only. |
 | `@skill-name` | Injects that skill's `SKILL.md` body (frontmatter stripped) before the agent runs. One message may inject several. |
 | `@@skill-name` | Escape hatch: stays a literal `@skill-name`. |
-| `$skill-name` | The legacy sigil from pi-skills-mention still works. Autocomplete only triggers on `@`. |
+| `$skill-name` | The legacy spelling from pi-skills-mention still works. Autocomplete only triggers on `@`. |
 
 Injected skills reach the model as pi's native `<skill name=... location=...>` blocks. The transcript renders them as one collapsed summary line; `ctrl+o` expands the full text. Skills already injected on the same session branch are not injected again.
 
-## Boundaries
+## When a mention triggers
+
+This extension calls an `@skill-name` written inside a prompt a *mention*, and its leading `@` or `$` the sigil.
 
 - Only skills that pi has loaded count as mentions. Unknown tokens such as `@PATH` and `@not-installed` stay literal text.
 - The sigil must sit on a token boundary. Emails (`user@example.com`, `a@b`), paths (`E:/x/@pdf`) and decorators (`@Component`) never trigger.
 - A token glued to `.` or `/` is not a mention: `@notes.md` and `@src/foo.ts` go to file completion.
 - Skill matching is fuzzy. When a skill name is a prefix of a filename, both rows appear in the `@` list and the user picks one.
 
-## How it works
+## Implementation notes
 
 | File | Role |
 | --- | --- |
@@ -88,12 +91,12 @@ One constraint shapes the design: pi's `setAutocompleteTriggerCharacters` filter
 When the `@` list shows no skill rows, check in this order:
 
 1. Run `/reload` and confirm the extension loaded.
-2. Confirm pi loaded the skill. A `SKILL.md` without a `description`, or with malformed frontmatter, is not loaded and therefore not listed.
+2. Confirm pi loaded the skill. A `SKILL.md` without a `description`, or with malformed frontmatter, is not loaded and does not appear in the list.
 3. Start pi with `PI_SKILLS_MENTION_DEBUG=1` and submit a message containing `@skill-name`. The terminal prints the skills `queued` and `injected` for that turn. No output means the mention was not recognised.
 
 If no `✦ @skills` summary appears after submitting, check whether the skill was already injected on the current session branch. A branch never receives the same skill twice.
 
-## Development
+## Development and tests
 
 ```bash
 npm test
