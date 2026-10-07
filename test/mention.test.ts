@@ -86,6 +86,10 @@ describe("scanMentions", () => {
 				"code-review",
 			]);
 		});
+
+		it("matches after the completion inserted its trailing space", () => {
+			assert.deepEqual(namesOf("invoke @skill-creator ", ["skill-creator"]), ["skill-creator"]);
+		});
 	});
 
 	it("never rewrites the input text", () => {

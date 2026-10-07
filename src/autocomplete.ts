@@ -110,16 +110,18 @@ export function createMentionAutocompleteProvider(
 
       // Replace exactly the typed token (`@partial`) rather than trusting the
       // shared `prefix`, which belongs to the native file completion when the
-      // list is merged.
+      // list is merged. A trailing space matches pi's own completions, which
+      // insert `"/name "` and `"@path "`.
       const currentLine = lines[cursorLine] ?? "";
       const beforePrefix = currentLine.slice(0, cursorCol - entry.typed.length);
       const afterCursor = currentLine.slice(cursorCol);
+      const inserted = `@${entry.skill.name} `;
       const newLines = [...lines];
-      newLines[cursorLine] = `${beforePrefix}@${entry.skill.name}${afterCursor}`;
+      newLines[cursorLine] = `${beforePrefix}${inserted}${afterCursor}`;
       return {
         lines: newLines,
         cursorLine,
-        cursorCol: beforePrefix.length + entry.skill.name.length + 1,
+        cursorCol: beforePrefix.length + inserted.length,
       };
     },
   };

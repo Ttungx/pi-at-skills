@@ -62,7 +62,7 @@ After the package is published to npm, the install command becomes `pi install n
 | `@skill-name` | Injects that skill's `SKILL.md` body (frontmatter stripped) before the agent runs. One message may inject several. |
 | `@@skill-name` | Escape hatch: stays a literal `@skill-name`. |
 
-Skill rows read like pi's native `/skill:` rows, with a scope tag and the skill description, for example `[u] Create new skills, ...`. Accepting a skill row adds no trailing space; pi's own file completion appends one.
+Skill rows read like pi's native `/skill:` rows, with a scope tag and the skill description, for example `[u] Create new skills, ...`. Accepting a row appends a space, matching pi's own slash-command and file completions.
 | `$skill-name` | The legacy spelling from pi-skills-mention still works. Autocomplete only triggers on `@`. |
 
 Injected skills reach the model as pi's native `<skill name=... location=...>` blocks. The transcript renders them as one collapsed summary line; `ctrl+o` expands the full text. Skills already injected on the same session branch are not injected again.

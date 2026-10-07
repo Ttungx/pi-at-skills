@@ -62,7 +62,7 @@ pi -e /path/to/pi-at-skills
 | `@skill-name` | 提交前注入该 skill 的 `SKILL.md` 正文（去掉 frontmatter），一条消息可注入多个。 |
 | `@@skill-name` | 转义，保持字面量 `@skill-name`。 |
 
-skill 条目右侧与 pi 原生 `/skill:` 列表一致，显示作用域标签和 skill 描述，例如 `[u] Create new skills, ...`。选中 skill 条目后不补尾随空格；pi 的文件补全会自动补一个空格。
+skill 条目右侧与 pi 原生 `/skill:` 列表一致，显示作用域标签和 skill 描述，例如 `[u] Create new skills, ...`。选中条目后补一个空格，与 pi 原生的斜杠命令和文件补全一致。
 | `$skill-name` | 兼容 pi-skills-mention 的旧写法，仍然可用；补全只在 `@` 上触发。 |
 
 注入的 skill 以 pi 原生 `<skill name=... location=...>` 块送达模型，界面上渲染为一行折叠摘要，按 `ctrl+o` 展开全文。同一会话分支上已注入过的 skill 不重复注入。
