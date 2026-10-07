@@ -108,7 +108,7 @@ The tests use node's built-in test runner and type stripping. They install no de
 
 ## Versioning
 
-The package version tracks the pi version and is currently 1.0.4. After upgrading pi, update `version` in `package.json` and publish under the matching tag as described in [RELEASING.md](RELEASING.md).
+The package version tracks the pi version: 1.0.4 corresponds to pi 1.0.4. A new version ships after pi is upgraded.
 
 ## Credits and license
 

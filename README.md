@@ -108,7 +108,7 @@ npm test
 
 ## 版本策略
 
-包版本号与 pi 版本号保持一致，当前为 1.0.4。升级 pi 后同步修改 `package.json` 中的 `version`，并按 [RELEASING.md](RELEASING.md) 打同名标签发布。
+包版本号与 pi 版本号保持一致，当前为 1.0.4，对应 pi 1.0.4。升级 pi 后再发布新版本。
 
 ## 致谢与许可
 
