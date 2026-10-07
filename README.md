@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/pi-at-skills)](https://www.npmjs.com/package/pi-at-skills)
 
-Chinese version: [README.zh.md](README.zh.md).
+Chinese version: [docs/README.zh.md](docs/README.zh.md).
 
 Invoke pi skills with `@` anywhere in the prompt while keeping `@` for file attachments. Written for pi users who prefer the opencode v2 input model. See [Install](#install) for setup and [When a mention triggers](#when-a-mention-triggers) for the limits.
 
@@ -114,7 +114,7 @@ The tests use node's built-in test runner and type stripping. They install no de
 
 ## Versioning
 
-The first two version segments track the pi version; the patch segment belongs to this package. 1.0.6 corresponds to pi 1.0.4.
+The first two version segments track the pi version; the patch segment belongs to this package. 1.0.7 corresponds to pi 1.0.4.
 
 ## Credits and license
 
