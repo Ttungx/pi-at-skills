@@ -1,3 +1,9 @@
+<div align="center">
+
+[中文](./README.md) · **English**
+
+</div>
+
 # pi-at-skills
 
 Invoke pi skills with `@` anywhere in the prompt, while keeping `@` for file attachments. Written for pi users who prefer the opencode v2 input model.
@@ -14,8 +20,6 @@ $tdd implement this feature                           pi native: start of messag
 review with @code-review first, then commit          this extension: anywhere, several at once
 @pdf process E:\programs\CUBEC per AGENTS.md         files and skills share one key
 ```
-
-中文 README: [README.md](README.md)
 
 ![@ completion list: skill rows carry a scope tag and the skill description](media/preview.png)
 

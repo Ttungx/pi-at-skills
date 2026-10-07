@@ -1,3 +1,9 @@
+<div align="center">
+
+**中文** · [English](./README.en.md)
+
+</div>
+
 # pi-at-skills
 
 用 `@` 在输入框任意位置调用 pi 的 skill，同时保留 `@` 的文件附件能力。适合已经习惯 opencode v2 输入方式的 pi 用户。
@@ -14,8 +20,6 @@ $tdd 实现这个功能                                  pi 原生写法：只�
 先审查 @code-review 再提交                          本扩展写法：任意位置，可多个
 @pdf 按 AGENTS.md 的规则处理 E:\programs\CUBEC      文件与 skill 共用 @ 键
 ```
-
-English README: [README.en.md](README.en.md)
 
 ![@ 补全列表：skill 条目带作用域标签与描述](media/preview.png)
 
