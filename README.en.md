@@ -114,7 +114,7 @@ The tests use node's built-in test runner and type stripping. They install no de
 
 ## Versioning
 
-The package version tracks the pi version: 1.0.4 corresponds to pi 1.0.4. A new version ships after pi is upgraded.
+The first two version segments track the pi version; the patch segment belongs to this package. 1.0.5 corresponds to pi 1.0.4.
 
 ## Credits and license
 

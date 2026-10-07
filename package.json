@@ -1,6 +1,6 @@
 {
   "name": "pi-at-skills",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "opencode 风格 · 用 @ 在输入框任意位置调用 pi skill，同时保留 @ 的文件附件能力。Invoke pi skills with @ anywhere in the prompt, sharing one @ menu with file attachments.",
   "keywords": [
